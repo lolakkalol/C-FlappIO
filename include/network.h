@@ -13,15 +13,21 @@ typedef float weight;
 
 typedef struct
 {
+    u_int8_t init_size;
     u_int8_t populated_layers;
-    u_int8_t* map;
+    u_int8_t* map;              // Is a map of layer sizes in the network
+    float (**activation)();
     neuron** neurons;
     weight** weights;
 } network;
 
-void compute_layer(blasint m, blasint n, float* weights, float* input_layer, float* output_layer);
-void compute_network(network n);
+void compute_layer(blasint m, blasint n, float* weights,
+ float* input_layer, float* output_layer);
+void compute_network(network* n);
 void initilize_network(network* net, u_int8_t layers);
 void add_layer(network* net, neuron* neuron_layer);
+ERROR_ID create_add_layer(network* net, int size, float (*fun_ptr)());
+void delete_network(network* net);
+void print_network(network* net);
 
 #endif
