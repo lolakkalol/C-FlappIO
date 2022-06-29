@@ -15,6 +15,7 @@ void initilize_network(network* net, u_int8_t layers) {
     net->map = malloc( layers * sizeof(u_int8_t*) );
     net->neurons = malloc( sizeof(neuron*) * layers);
     net->weights = malloc( sizeof(weight*) * (layers-1));
+    net->activation = malloc( sizeof( float (*) ) * layers );
 }
 
 /**
@@ -51,13 +52,15 @@ void add_layer(network* net, neuron* neuron_layer) {
  *  execution and FUNC_ERROR otherwise.
  * 
  * @param net The network to add a layer to
- * @param fun_ptr Pointer to a random number function for weights 
+ * @param fun_rand Pointer to a random number function for weights 
  * starting value
+ * @param fun_activation Activation function for the layer
  * 
  * @return ERROR_ID Returns FUNC_OK if allocation worked and FUNC_ERROR if 
  * something went wrong
  */
-ERROR_ID create_add_layer(network* net, int size, float (*fun_ptr)()) {
+ERROR_ID create_add_layer(network* net,
+ int size, float (*fun_rand)(), float (*fun_activation)(float)) {
 
     // if layers full; TODO: Add dynamic allocation of layers
     if (net->populated_layers >= net->init_size)
@@ -80,6 +83,9 @@ ERROR_ID create_add_layer(network* net, int size, float (*fun_ptr)()) {
     // Maps the network structure by layer size
     net->map[ layer ] = size;
 
+    // Sets activation function for layer
+    net->activation[ layer ] = fun_activation;
+
     // Tells how many layers are populated
     net->populated_layers++;
 
@@ -100,7 +106,7 @@ ERROR_ID create_add_layer(network* net, int size, float (*fun_ptr)()) {
         }
 
         for (int i = 0; i < weights; i++) {
-            net->weights[ layer-1 ][i] = (*fun_ptr)();
+            net->weights[ layer-1 ][i] = (*fun_rand)();
         }
     }
 
@@ -118,7 +124,8 @@ void compute_network(network* net) {
          net->map[i],
          net->weights[i],
          net->neurons[i],
-         net->neurons[i+1]);
+         net->neurons[i+1],
+         net->activation[i]);
     }
 }
 
@@ -129,7 +136,7 @@ void compute_network(network* net) {
 
 /**
  * @brief Propagates the values of the input_layer through the weights
- *  to the next layer (output_layer)
+ *  to the next layer (output_layer). Does not use activation functions
  * 
  * @param m Amount of output neurons (Not including bias)
  * @param n Amount of input neurons
@@ -140,10 +147,14 @@ void compute_network(network* net) {
  * to be stored
  */
 void compute_layer(blasint m, blasint n, float* weights,
- float* input_layer, float* output_layer) {
+ float* input_layer, float* output_layer, float (*fun_activation)(float)) {
 
     cblas_sgemv(CblasRowMajor, CblasNoTrans, m, n, 1, weights, n,
      input_layer, 1, 0, output_layer, 1);
+
+    for(int i = 0; i < m; i++) {
+        output_layer[i] = (*fun_activation)( output_layer[i] );
+    }
 }
 
 
