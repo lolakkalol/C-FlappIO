@@ -3,32 +3,26 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include <math.h>
 
 #define LAYERS 5
 
+// Only returns possitive numbers between 0 - 1
 float randFloat() {
     return (float)(rand())/(float)RAND_MAX;
-}
-
-float sigmoid(float x) {
-    return 1/(1 + exp(-x));
 }
 
 int main() {
     srand(time(0));
 
-    printf("%f", sigmoid(3));
-
     network n1;
 
     initilize_network(&n1, 5);
-    create_add_layer(&n1, 2, &randFloat, &sigmoid);
-    create_add_layer(&n1, 4, &randFloat, &sigmoid);
-    create_add_layer(&n1, 4, &randFloat, &sigmoid);
-    create_add_layer(&n1, 4, &randFloat, &sigmoid);
-    create_add_layer(&n1, 4, &randFloat, &sigmoid);
-    create_add_layer(&n1, 2, &randFloat, &sigmoid);
+    create_add_layer(&n1, 2, &randFloat, &ReLU);
+    create_add_layer(&n1, 4, &randFloat, &ReLU);
+    create_add_layer(&n1, 4, &randFloat, &ReLU);
+    create_add_layer(&n1, 4, &randFloat, &ReLU);
+    create_add_layer(&n1, 4, &randFloat, &ReLU);
+    create_add_layer(&n1, 2, &randFloat, &ReLU);
 
     n1.neurons[0][0] = 523;
     n1.neurons[0][1] = 146;

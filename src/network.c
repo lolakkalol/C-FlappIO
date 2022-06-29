@@ -190,3 +190,26 @@ void print_network(network* net) {
     }
     
 }
+
+/**
+ * @brief Sigmoid function
+ * 
+ * @param x Value
+ * @return float 
+ */
+float sigmoid(float x) {
+    return 1/(1 + exp(-x));
+}
+
+/**
+ * @brief Binary step function. Returns 1 if x > 0 else 0
+ * 
+ * @param x Value
+ * @return float 
+ */
+float binary_step(float x) {
+    return (x > 0) ? 1 : 0;
+}
+float ReLU(float x) {
+    return (x > 0) ? x : 0;
+}

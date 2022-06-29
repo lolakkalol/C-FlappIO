@@ -2,6 +2,7 @@
 #define NETWORK_H
 #include "cblas.h"
 #include <stdlib.h>
+#include <math.h>
 
 typedef enum {
     FUNC_ERROR,
@@ -11,7 +12,6 @@ typedef enum {
 typedef float neuron;
 typedef float weight;
 
-// TODO: Add better structure
 typedef struct
 {
     u_int8_t init_size;
@@ -32,4 +32,9 @@ ERROR_ID create_add_layer(network* net,
 void delete_network(network* net);
 void print_network(network* net);
 
+// Activation functions
+
+float sigmoid(float x);
+float binary_step(float x);
+float ReLU(float x);
 #endif
