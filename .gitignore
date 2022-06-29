@@ -1,5 +1,14 @@
 #Custom
 .vscode
+lib
+include/cblas.h
+include/f77blas.h
+include/lapacke_config.h
+include/lapacke.h
+include/lapacke_mangling.h
+include/lapacke_utils.h
+include/lapack.h
+include/openblas_config.h
 
 # Prerequisites
 *.d
