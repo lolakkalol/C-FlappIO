@@ -1,7 +1,7 @@
 VPATH = src include $(OUT) lib
 OUT = build
 SDIR = src
-PARAM = -I ./include -L ./lib  -lopenblas -lpthread -lgfortran -ggdb
+PARAM = -I ./include -L ./lib  -lopenblas -lpthread -lgfortran -ggdb -lm -ldl 
 
 all: main.out
 
