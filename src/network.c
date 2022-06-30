@@ -68,7 +68,7 @@ ERROR_ID create_add_layer(network* net,
 
     int layer = net->populated_layers;
 
-    // Allocates memory for an neuron array. + 1 is for a bias
+    // Allocates memory for a neuron array. + 1 is for a bias
     net->neurons[ layer ] = malloc( (sizeof(neuron) * size ) + 1 );
 
     // If failed allocated memory
@@ -77,10 +77,10 @@ ERROR_ID create_add_layer(network* net,
         return FUNC_ERROR;
     }
 
-    // Sets bias node to 1
-    net->neurons[ layer ][size + 1] = 1;
+    // Sets bias node to 1. Bias node is at [size] due to arrays start at 0
+    net->neurons[ layer ][size] = 1;
 
-    // Maps the network structure by layer size
+    // Maps the network structure by layer size (Excluding bias node)
     net->map[ layer ] = size;
 
     // Sets activation function for layer
@@ -165,7 +165,8 @@ void print_weights(weight* w, int size) {
 }
 
 void print_neurons(neuron* n, int size) {
-    for (int j = 0; j < size; j++) {
+    // size+1 to print bias node
+    for (int j = 0; j < size+1; j++) {
         printf("%.2f ", n[j]);
     }
 }
@@ -177,10 +178,10 @@ void print_neurons(neuron* n, int size) {
  */
 void print_network(network* net) {
     for (int i = 0; i < net->populated_layers; i++) {
-        if ( i > 0)
+        /*if ( i > 0)
             print_weights(net->weights[i-1], net->map[i] * net->map[i-1]);
 
-        printf("\n");
+        printf("\n");*/
         
         print_neurons(net->neurons[i], net->map[i]);
             

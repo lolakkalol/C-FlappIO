@@ -21,7 +21,6 @@ int main() {
     create_add_layer(&n1, 4, &randFloat, &ReLU);
     create_add_layer(&n1, 4, &randFloat, &ReLU);
     create_add_layer(&n1, 4, &randFloat, &ReLU);
-    create_add_layer(&n1, 4, &randFloat, &ReLU);
     create_add_layer(&n1, 2, &randFloat, &ReLU);
 
     n1.neurons[0][0] = 523;
@@ -33,10 +32,7 @@ int main() {
 
     time_t now;
     now = time(0);
-    for (int i = 0; i < 10000000; i++)
-    {
-        compute_network(&n1);
-    }
+    compute_network(&n1);
 
 
     printf(" ------------- AFTER CALC ------------- \n");
