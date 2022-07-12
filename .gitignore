@@ -9,6 +9,8 @@ include/lapacke_mangling.h
 include/lapacke_utils.h
 include/lapack.h
 include/openblas_config.h
+Doxyfile
+out/
 
 # Prerequisites
 *.d
